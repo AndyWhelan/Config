@@ -1,0 +1,10 @@
+.config/.common_profile gitlab-language=Shell
+.config/.common_profile linguist-language=Shell
+.config/.common_rc gitlab-language=Shell
+.config/.common_rc linguist-language=Shell
+.config/.input_rc gitlab-language=Shell
+.config/.input_rc linguist-language=Shell
+.config/.screen_rc gitlab-language=Shell
+.config/.screen_rc linguist-language=Shell
+.config/.tmux.conf gitlab-language=Tmux
+.config/.tmux.conf linguist-language=Tmux

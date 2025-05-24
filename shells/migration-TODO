@@ -1,0 +1,15 @@
+ # Output of git diff --stat {{{
+ .bashrc                      | 120 -----------------------------------------
+ .tmux.conf                   |  10 ----
+ .vim/templates/skeleton.tex  |  51 ------------------
+ .vimrc                       |  79 ---------------------------
+ README.md                    |   4 +-
+ shells/.bashrc               |  40 +++-----------
+ shells/.common_profile       |  11 +++-
+ shells/.common_rc            |  74 -------------------------
+ shells/.zprofile             |   1 -
+ shells/.zshrc                |   1 -
+ shells/shell_behaviour_debug | 126 -------------------------------------------
+ texput.log                   |  21 --------
+ 12 files changed, 18 insertions(+), 520 deletions(-)
+ #}}}

@@ -1,0 +1,126 @@
+# ---GLOSSARY--- {{{
+-ZSH : login shell
+ZSH : non-login shell
+zp : .zprofile
+zr : .zshrc
+cr : .common_rc
+cp : common_profile
+"D" : echos a debug string
+< ... > : comment on behaviour
+#  }}}
+# Old  : {{{
+#-ZSH : Old:        Expected: {{{
+zr -> zp
+   zp -> cp
+      cp -> cr
+         cr -> "D"
+         cr -> export HISTREC_STARTED=1
+   zp -> export ZSH : ZSH_PROFILE_SOURCED=1
+   zp -> zr
+      zr -> zp
+         zp -> cp
+            cp -> cr
+               cr -> "D"
+      zr -> cr
+         cr -> "D"
+zr -> cr
+   cr -> "D"
+#}}}
+#-ZSH : Old:        Debug: {{{
+zp
+cp
+cr
+Debug... remove later
+Start recording shell history to /Users/andrewwhelan/.config/shells/shell_zsh.20250523_232523.log? (y/n) n
+History recording not started.
+zr
+zp
+cp
+cr
+Debug... remove later
+cr
+Debug... remove later
+#}}}
+#-ZSH : Old:        Actual: {{{
+zp -> cp
+   cp -> cr
+      cr -> "D"
+      cr -> export HISTREC_STARTED=1
+zp -> export ZSH : ZSH_PROFILE_SOURCED=1
+zp -> zr
+   zr -> zp
+      zp -> cp
+         cp -> cr
+            cr -> "D"
+   zr -> cr
+      cr -> "D"
+# }}}
+#   ZSH  : Old:        Expected: {{{
+zr -> zp
+   zp -> cp
+      cp -> cr
+         cr -> "D"
+         <cr doesn't run/ask history recording because HISTREC_STARTED=1 was inherited>
+   <zp doesn't source zr because ZSH : Old_PROFILE_SOURCE=1 was inherited>
+zr -> cr
+   cr -> "D"
+#}}}
+#  ZSH  : Old:        Debug {{{
+zr
+zp
+cp
+cr
+Debug... remove later
+cr
+Debug... remove later
+#}}}
+#  }}}
+# Nw1  : cp -!> cr {{{
+#-ZSH : Nw1:        Expected: {{{
+zp -> cp
+zp -> export ZSH : ZSH_PROFILE_SOURCED=1
+zp -> zr
+   zr -> zp
+      zp -> cp
+   zr -> cr
+      cr -> "D"
+      cr -> export HISTREC_STARTED=1
+      <cr prompts for history recording>
+#  }}}
+#-ZSH : Nw1:        Debug: {{{
+zp
+cp
+zr
+zp
+cp
+cr
+Debug... remove later
+Start recording shell history to /Users/andrewwhelan/.config/shells/shell_zsh.20250524_004010.log? (y/n) n
+History recording not started.
+#}}}
+# ZSH  : Nw1:        Expected: {{{
+zr -> zp
+   zp -> cp
+   <zp doesn't source zr because ZSH : Old_PROFILE_SOURCE=1 was inherited>
+zr -> cr
+   cr -> "D"
+#  }}}
+#ZSH  : Nw1:        Debug: {{{
+zr
+zp
+cp
+cr
+Debug... remove later
+# }}}
+#}}}
+# Nw2  : General recursion guards {{{
+Something like the following, but perhaps having an export for MY_RC_OR_PROFILE
+depending on whether we want the child process to have the variable 
+if [ -n "$MY_RC_OR_PROFILE" ]; then
+   # Guard: config file already sourced/run, skip to prevent recursion
+   return 0
+fi
+# Mark that the script has run
+MY_RC_OR_PROFILE=1
+# ...rest of your script here...
+#  }}}

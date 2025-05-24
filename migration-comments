@@ -1,0 +1,14 @@
+.common.vim -> .config/vi/.common.vim
+mv .vim .config/vi/vim/ && ln -s .config/vi/vim/.vim .vim
+mv .viminfo .config/vi/vim && ln -s .config/vi/vim/.viminfo .viminfo
+ln -s .config/shells/.bash_profile .bash_profile
+ln -s .config/shells/.bashrc .bashrc
+ln -s .config/vi/.common.vim .common.vim
+ln -s .config/shells/.common_profile .common_profile
+ln -s .config/shells/.common_rc .common_rc
+ln -s .config/readline/.inputrc .inputrc
+ln -s .config/term_mux/screen/.screenrc .screenrc
+ln -s .config/term_mux/tmux/.tmux.conf .tmux.conf
+ln -s .config/vi/vim/.vimrc .vimrc
+ln -s .config/shells/.zprofile .zprofile
+ln -s .config/shells/.zshrc .zshrc

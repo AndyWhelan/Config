@@ -1,0 +1,51 @@
+%<Document Class
+\documentclass{article} % Main types described below
+% article    Short documents—articles, papers, assignments. No chapters.
+% report     Longer documents like theses and reports. Supports chapters.
+% book       Books or manuals. Chapters start on right pages. Has parts, front/back matter
+% beamer     Slide presentations. Each frame is a slide. Highly customizable.
+% letter     Writing formal letters. Simple formatting with opening/closing.
+% proc       Conference proceedings. Similar to article but with different style.
+%>
+%<Packages
+\usepackage[usenames,dvipsnames]{color}  % Basic color names, extended color support
+\usepackage{empheq}                      % Highlight or group equations nicely
+\usepackage{enumerate}                   % Custom labels for numbered lists
+\usepackage{graphicx}                    % Include and scale images
+\usepackage{hyperref}                    % Clickable links and PDF bookmarks
+\usepackage{tabularx}                    % Tables with adjustable-width columns
+\usepackage[most]{tcolorbox}             % Versatile colored boxes for notes or theorems
+\usepackage{textcomp}                    % Extra text symbols like degree and currency
+\usepackage{url}                         % Properly typeset and break long URLs
+\usepackage{verbatim}                    % Show text/code exactly as typed
+\usepackage{wasysym}                     % Special symbols: smileys, weather, etc.
+\usepackage{xcolor}                      % Advanced color control and models
+%>
+%<Settings
+%<Colors
+\definecolor{linkborder}{RGB}{204,229,255}  % Custom color for link borders (pale blue)
+\definecolor{vanish}{RGB}{224,224,224}      % Custom color for vanishing terms (pale grey)
+\hypersetup{linkbordercolor=linkborder}     % Set link border color to defined pale blue
+%>
+\numberwithin{equation}{section}            % Set the equation numbering to be by sections
+\renewcommand{\arraystretch}{2}             % Set multiplier for default row height
+%>
+%<Title Info
+\title{Dondozo}
+\author{Andrew Whelan}
+\date{}
+%>
+%<Document
+\begin{document}
+    %<Title
+    \maketitle
+    \thispagestyle{empty}   % No numbering on this page
+    %>
+%<Table of Contents
+    \setcounter{page}{0}    % Set the undisplayed page number to 0
+    \tableofcontents        % For each unnumbered section add something like
+%                             `\addcontentsline{toc}{section}{<section_name>}`
+    \newpage                
+%>
+\end{document}
+%>

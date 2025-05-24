@@ -1,0 +1,20 @@
+echo "cp" #DEBUG, remove later
+# Common login-shell setup. Want 'heavyweight' stuff here, i.e.
+# 1. Environment variables,
+# 2. Resource-intensive commands,
+# 3. Time-intensive scripts, and 
+# 4. Background services/processes
+
+# Set environment variables
+	# Set CDPATH (Directory search path)#
+export CDPATH=".:/src"
+	# Default editor settings
+export EDITOR=nvim
+export VISUAL=$EDITOR
+	# Add personal binary directories to the PATH
+export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
+	# MacPorts Installer addition on 2022-05-30_at_19:54:00: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+	# Timezone
+export TZ=Europe/Dublin

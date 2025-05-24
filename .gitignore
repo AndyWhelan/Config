@@ -1,0 +1,15 @@
+wireshark/
+*.log
+*.viminfo
+*vimlog.txt
+# Ignore everything under these
+term/iterm2/**
+vi/vim/.vim/**
+# Except allow the following
+!term/iterm2/DynamicProfiles/
+!term/iterm2/DynamicProfiles/**
+!term/iterm2/DynamicProfiles
+!vi/vim/.vim/templates/
+!vi/vim/.vim/templates/**
+!vi/vim/.vim/templates
+#TODO: Templates for certain files because I'm doing some symlinking and could get messy!

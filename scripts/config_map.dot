@@ -1,0 +1,15 @@
+// Config Files {{{
+.
+.bash_profile
+.bashrc
+.common_profile
+.common_rc
+.zprofile
+.zshrc
+//}}}
+//  Config File Dependencies{{{
+digraph G {
+   ".bashrc" <- ".bash_profile";
+   ".bashrc" <- ".common_rc";
+}
+//}}}

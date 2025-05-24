@@ -1,0 +1,6 @@
+[alias]
+   submit = !git add -i && git commit && git push origin main
+   reignore = !git rm -r --cached . && git add .
+[user]
+   email = andrewwhelan@arista.com
+   name = andrewwhelan

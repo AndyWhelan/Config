@@ -1,0 +1,13 @@
+digraph G {
+    ".bash_profile" -> ".common_profile";
+    ".bash_profile" -> ".bashrc";
+    ".bashrc" -> ".bash_profile" [label="ifn sourced"];
+    ".bashrc" -> ".common_rc";
+    ".common_profile" -> ".common_rc";
+    ".zprofile" -> ".common_profile";
+    ".zprofile" -> ".zshrc";
+    ".zshrc" -> ".zprofile" [label="ifn sourced"];
+    ".zshrc" -> ".common_rc";
+    { rank=same; ".bashrc"; ".zshrc"; }
+    { rank=same; ".bash_profile"; ".zprofile"; }
+}

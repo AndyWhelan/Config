@@ -1,0 +1,172 @@
+echo "cr" #DEBUG, remove later
+# Common non-login-shell setup. NO 'heavyweight' stuff here, i.e.
+# 1. No environment variables,
+# 2. No resource-intensive commands,
+# 3. No time-intensive scripts, and 
+# 4. No background services/processes
+#
+# Variables: Filenames: [n]vim {{{
+vimrc_common="$HOME/.common.vim"
+vimrc_vanilla="$HOME/.vimrc"
+vimrc_neo="$HOME/.config/nvim/init.lua"
+#  }}}
+# Variables: Filenames: Shells {{{
+bashprofile="$HOME/.bash_profile"
+bashrc="$HOME/.bashrc"
+common_profile="$HOME/.common_profile"
+common_rc="$HOME/.common_rc"
+shellname=$(ps -p $$ -o comm=)
+shellname="${shellname#-}"      # get rid of any login-shell encoding
+shellname=$(basename "$shellname")
+if [ "$shellname" = 'zsh' ]; then
+   shellprofile="$zprofile"
+elif [ "$shellname" = 'bash' ]; then
+   shellprofile="$bash_profile"   
+else # assume it's just `shell_profile`
+   shellprofile="$HOME/.$shellname"
+fi
+shellrc="$HOME/.$shellname"rc     # TODO: shell-specific
+zprofile="$HOME/.zprofile"        # TODO: zsh
+zshrc="$HOME/.zshrc"              # TODO: zsh
+#  }}}
+# Functions: Prompt (y/n) {{{
+# Prompt function compatible with bash and zsh
+prompt_yes_no() {
+   while true; do
+      printf "%s (y/n) " "$1"
+      if read -r answer; then
+         case "$answer" in
+            [Yy]*) return 0 ;;
+            [Nn]*) return 1 ;;
+            *) echo "Please answer y or n." ;;
+         esac
+      fi
+   done
+}
+#  }}}
+# Aliases:   Calendar {{{
+alias jan='cal -m 01'
+alias feb='cal -m 02'
+alias mar='cal -m 03'
+alias apr='cal -m 04'
+alias may='cal -m 05'
+alias jun='cal -m 06'
+alias jul='cal -m 07'
+alias aug='cal -m 08'
+alias sep='cal -m 09'
+alias oct='cal -m 10'
+alias nov='cal -m 11'
+alias dec='cal -m 12'
+#  }}}
+# Aliases:   Editing {{{
+alias e='nvim -O'
+alias ebp="e $bash_profile"       # TODO: bash
+alias ebrc="e $bashrc"            # TODO: bash
+alias ecp="e $common_profile"
+alias ecrc="e $common_rc"
+alias ecvrc="e $common_vimrc"
+alias esrc="e $shellrc"           # TODO: shell-specific
+alias evrc="e $HOME/.config/nvim/init.lua $HOME/.common.vim"
+alias ezp="e ~/.zprofile"         # TODO: zsh
+alias ezrc="e ~/.zshrc"           # TODO: zsh
+#  }}}
+# Aliases:   Executables {{{
+if ls --color=auto >/dev/null 2>&1; then
+   alias ls='ls --color=auto'     # TODO: linux
+elif ls -G >/dev/null 2>&1; then
+   alias ls='ls -G'               # TODO: darwin
+fi
+alias matlab="/Applications/MATLAB_R2024b.app/bin/matlab -r \"userpath('\"$(pwd)\"');\""  # TODO: darwin
+alias pip=pip3
+alias python=python3
+alias ssrc="source $shellrc"      # TODO: shell-specific
+alias vimdiff="nvim -d"
+#  }}}
+# Aliases:   Helpers {{{
+alias gb="cat ~/.gb" # git-wrapper (propr. so not tracked)
+#  }}}
+# Aliases:   Shorthands {{{
+alias hgrep='history | grep -i'
+alias lsa='ls -a'
+alias lsal='ls -al'
+alias lsgi='ls | grep -i'
+alias lsl='ls -l'
+#  }}}
+# TODO:      Categorize later! {{{
+set -o vi # vim-motions at shell prompt  # TODO: bash, zsh (POSIX shells)
+HISTSIZE=1000
+
+DISABLE_AUTO_TITLE=true  # TODO: zsh (iterm2 / oh-my-zsh specific in some cases)
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=          # TODO: linux (systemd)
+
+# User specific aliases and functions
+if [ -f "$HOME/.cargo/env" ]; then
+    . "$HOME/.cargo/env"
+fi
+
+export ITERM2_DYNAMIC_PROFILES="$HOME/Library/Application Support/iTerm2/DynamicProfiles"  # TODO: darwin, iTerm2
+# To make manpages easier to read with colour-coding
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+export LS_COLORS='di=34:fi=0:ln=36:pi=33:so=35:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43'  # TODO: linux (GNU ls)
+#  }}}
+# Traps:     History Recording {{{
+# Only proceed if running interactively
+case $- in
+   *i*) ;;
+     *) return;;
+esac
+# Timestamp for filename
+# Only run once per shell session
+echo "Debug... remove later"
+if [ -z "$HISTREC_STARTED" ]; then
+   export HISTREC_STARTED=1
+   HISTREC_TS=$(date +%Y%m%d_%H%M%S)
+   SHELL_VERSION_STR="shell"
+   if [ -n "$BASH_VERSION" ]; then
+      SHELL_VERSION_STR="${SHELL_VERSION_STR}_bash"
+   elif [ -n "$ZSH_VERSION" ]; then
+      SHELL_VERSION_STR="${SHELL_VERSION_STR}_zsh"
+   else
+      : # don't append. don't use any other shell yet, so ok for now
+   fi
+   HISTREC_FILE="$HOME/.config/shells/$SHELL_VERSION_STR.$HISTREC_TS.log"
+
+   # Ask to start recording
+   if prompt_yes_no "Start recording shell history to $HISTREC_FILE?"; then
+      echo "Recording history..."
+
+      # Bash setup
+      if [ -n "$BASH_VERSION" ]; then
+         # Append each command to file after execution
+         PROMPT_COMMAND='history 1 >> '"$HISTREC_FILE"
+         # On exit, notify user
+         trap 'echo "Shell history saved to '"$HISTREC_FILE"'"' EXIT
+
+      # Zsh setup
+      elif [ -n "$ZSH_VERSION" ]; then
+         # Set up zsh to append each command to the file after it runs
+         # This uses the precmd hook that runs before prompt display (after command runs)
+         precmd_functions+=(record_history)
+         record_history() {
+            # Append last command from history to file
+            fc -ln -1 >> "$HISTREC_FILE"
+         }
+         # On exit, notify user
+         TRAPEXIT() {
+            echo "Shell history saved to '$HISTREC_FILE'"
+         }
+      else
+         echo "Unsupported shell for history recording."
+      fi
+   else
+      echo "History recording not started."
+   fi
+fi
+#  }}}
